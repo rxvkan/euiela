@@ -325,7 +325,7 @@
             const startDate = new Date('2025-03-30'); // Data corrigida
             const diffDays = Math.floor((new Date() - startDate) / (1000 * 3600 * 24));
             document.querySelectorAll('.countup').forEach(el => {
-                el.textContent = diffDays + ' dias';
+                el.textContent = diffDays - 2 + ' dias';
             });
         }
         setInterval(updateCounter, 1000);
