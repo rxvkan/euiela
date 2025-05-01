@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>oba nois</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            overflow: hidden;
+            background: #fff9fb;
+            color: #7a3a4a;
+        }
+
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff0f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .click-prompt {
+            font-size: 1.8rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            cursor: pointer;
+            padding: 1.5rem 3rem;
+            border-radius: 50px;
+            background: #ff99b3;
+            color: white;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+            box-shadow: 0 10px 30px rgba(255,153,179,0.3);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .nav-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0.5rem;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .nav-container.visible {
+            opacity: 1;
+        }
+
+        .nav-button {
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            background: rgba(255,153,179,0.1);
+            border: 2px solid #ff99b3;
+            color: #7a3a4a;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: buttonFloat 3s infinite;
+        }
+
+        @keyframes buttonFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
+        .nav-button.active,
+        .nav-button:hover {
+            background: #ff99b3;
+            color: white;
+            animation: none;
+        }
+
+        .section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 100px 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+        }
+
+        .section.active {
+            opacity: 1;
+            visibility: visible;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .heart-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.08;
+            filter: blur(2px);
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+            padding: 1rem;
+        }
+
+        .photo-item {
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            aspect-ratio: 1;
+            background: #fff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            animation: photoPopIn 0.6s ease backwards;
+        }
+
+        @keyframes photoPopIn {
+            from { transform: scale(0.9); opacity: 0; }
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .photo-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .countup {
+            font-size: 3rem;
+            text-align: center;
+            color: #ff99b3;
+            margin: 2rem 0;
+            animation: textGlow 2s infinite alternate;
+        }
+
+        @keyframes textGlow {
+            from { text-shadow: 0 0 10px rgba(255,153,179,0.3); }
+            to { text-shadow: 0 0 20px rgba(255,153,179,0.5); }
+        }
+
+        .love-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin: 2rem auto;
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255,255,255,0.9);
+            border-radius: 20px;
+            max-width: 600px;
+            animation: textSlideIn 0.8s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        @keyframes textSlideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Estilo especial para última seção */
+        #photos .photo-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        #photos .photo-item:nth-child(2) {
+            grid-column: span 2;
+            aspect-ratio: 2/1;
+            animation-delay: 0.2s;
+        }
+
+        #photos .photo-item {
+            animation: photoFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes photoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="splash-screen" id="splashScreen">
+        <div class="click-prompt">oi kk</div>
+    </div>
+
+    <audio id="background-music" loop>
+        <source src="audio/background.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="nav-container" id="navContainer">
+        <div class="nav-button active" data-section="home">Você</div>
+        <div class="nav-button" data-section="you">Eu</div>
+        <div class="nav-button" data-section="me">Nós</div>
+        <div class="nav-button" data-section="month">:3</div>
+        <div class="nav-button" data-section="photos">Ebaa</div>
+    </div>
+
+    <img class="heart-bg" src="img/euiela.jpg">
+
+    <section class="section active" id="home">
+        <h1 class="countup">30 dias</h1>
+        <div class="love-text">
+            Eu amo todos os momentos que eu tive contigo e que ainda vou ter, cada semana, dia, hora, minuto, segundo,  cada minimo instante valeu a pena, e eu tenho certeza disso cada vez mais, voce é uma garota perfeita, eu quero ter a ti para sempre, você é a melhor coisa que ja me pode acontecer, eu quero viver a minha vida toda com você, eu te amo muito meu amor, você é incrivel, é o amor da minha vida, a minha princesa, é minha todinha todinha, eu posso ser péssimo em demonstrar o quanto eu amo, péssimo em fazer coisas que mostram isso, eu sempre fui assim, mas eu to tentando, por você, por mais que as vezes você me odeie e ache que eu não te amo por não consegui demonstrar o suficiente, saiba que eu te amo muito, muito mesmo, como eu nunca amei alguém, e eu fiz isso como forma de demonstrar o quanto eu te amo, você é incrivel meu amor
+        </div>
+        <div class="photo-grid">
+            <div class="photo-item"><img src="img/nos1.png"></div>
+            <div class="photo-item"><img src="img/nos2.jpg"></div>
+            <div class="photo-item"><img src="img/nos3.jpg"></div>
+        </div>
+    </section>
+
+    <section class="section" id="you">
+        <div class="love-text">
+            Eu não sei oque escrever aqui, mas é eu blz haha !?
+        </div>
+        <div class="photo-grid">
+            <div class="photo-item"><img src="img/nos4.png"></div>
+            <div class="photo-item"><img src="img/nos5.png"></div>
+            <div class="photo-item"><img src="img/nos6.png"></div>
+        </div>
+    </section>
+
+    <section class="section" id="me">
+        <div class="love-text">
+            Eu quero que dure pra sempre, quero que seja pra sempre, nós, só nós, pra sempre, quero viver minha vida ao seu lado, e te fazer a mulher mais feliz do mundo, sei que é dificil (vc me odeia? kk) mas enquanto estivermos juntos, e se Deus quiser que seja para sempre, eu vou tentar, quero te fazer bem sempre, sempre, sempre. Eu te amo meu amor <3
+        </div>
+    </section>
+
+    <section class="section" id="month">
+        <div class="countup">30 dias</div>
+        <div class="love-text">
+            :3 <br> 30 é mais que 29
+        </div>
+    </section>
+
+    <section class="section" id="photos">
+        <div class="photo-grid">
+            <div class="photo-item"><img src="img/nos7.png"></div>
+            <div class="photo-item"><img src="img/nos8.png"></div>
+            <div class="photo-item"><img src="img/nos9.jpg"></div>
+        </div>
+    </section>
+
+    <script>
+        // Inicialização
+        const splashScreen = document.getElementById('splashScreen');
+        const navContainer = document.getElementById('navContainer');
+        const sections = document.querySelectorAll('.section');
+        const navButtons = document.querySelectorAll('.nav-button');
+        const bgMusic = document.getElementById('background-music');
+
+        // Função para alternar seções
+        function showSection(sectionId) {
+            sections.forEach(section => {
+                section.classList.remove('active');
+                if(section.id === sectionId) {
+                    setTimeout(() => section.classList.add('active'), 50);
+                }
+            });
+        }
+
+        // Evento de clique inicial
+        splashScreen.addEventListener('click', () => {
+            splashScreen.style.opacity = '0';
+            navContainer.classList.add('visible');
+            bgMusic.volume = 0.1;
+            bgMusic.play();
+            setTimeout(() => {
+                splashScreen.style.display = 'none';
+            }, 1000);
+        });
+
+        // Navegação
+        navButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                navButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                showSection(button.dataset.section);
+            });
+        });
+
+        // Contador de dias
+        function updateCounter() {
+            const startDate = new Date('2025-03-30'); // Data corrigida
+            const diffDays = Math.floor((new Date() - startDate) / (1000 * 3600 * 24));
+            document.querySelectorAll('.countup').forEach(el => {
+                el.textContent = diffDays + ' dias';
+            });
+        }
+        setInterval(updateCounter, 1000);
+        updateCounter();
+    </script>
+</body>
+</html>
