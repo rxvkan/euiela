@@ -270,7 +270,7 @@
     <section class="section" id="month">
         <div class="countup">30 dias</div>
         <div class="love-text">
-            :3 <br> 30 é mais que 29
+            :3 <br> <3
         </div>
     </section>
 
@@ -325,7 +325,7 @@
             const startDate = new Date('2025-03-30'); // Data corrigida
             const diffDays = Math.floor((new Date() - startDate) / (1000 * 3600 * 24));
             document.querySelectorAll('.countup').forEach(el => {
-                el.textContent = diffDays - 2 + ' dias';
+                el.textContent = diffDays + ' dias';
             });
         }
         setInterval(updateCounter, 1000);
