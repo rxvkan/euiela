@@ -190,6 +190,48 @@
             animation: textSlideIn 0.8s ease;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
+        
+        .special-letter {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin: 2rem auto;
+            padding: 2.5rem;
+            background: rgba(255, 249, 251, 0.95);
+            border-radius: 20px;
+            max-width: 700px;
+            box-shadow: 0 8px 25px rgba(122, 58, 74, 0.15);
+            text-align: justify;
+            position: relative;
+            overflow: hidden;
+            animation: letterAppear 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+        
+        .special-letter:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #ff99b3, #ff4d6d, #ff99b3);
+            animation: borderFlow 8s linear infinite;
+        }
+        
+        @keyframes letterAppear {
+            from { 
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        @keyframes borderFlow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
 
         @keyframes textSlideIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -234,6 +276,7 @@
         <div class="nav-button" data-section="me">Nós</div>
         <div class="nav-button" data-section="month">:3</div>
         <div class="nav-button" data-section="photos">Ebaa</div>
+        <div class="nav-button" data-section="letter">Oii</div> <!-- Novo botão -->
     </div>
 
     <img class="heart-bg" src="img/euiela.jpg">
@@ -279,6 +322,18 @@
             <div class="photo-item"><img src="img/nos7.png"></div>
             <div class="photo-item"><img src="img/nos8.png"></div>
             <div class="photo-item"><img src="img/nos9.jpg"></div>
+        </div>
+    </section>
+    
+    <!-- Nova seção da carta -->
+    <section class="section" id="letter">
+        <div class="special-letter">
+            Eu te amo, e sei que começo meus textos assim normalmente, por mais que eu acho que isso não é o suficiente, pois sei que um "eu te amo" pode ser usado pra muitas coisas, e você não é qualquer coisa, voce é o amor da minha vida, sei que eu sou pessimo em expressar oque eu sinto, em perceber ações que tomei, em entender algumas coisas, eu costumei a sempre não me ligar muito a detalhes que podem ser importantes pra outras pessoas, por não me importar com muita coisa, sejam coisas fúteis, ou coisas de fato importantes, mas eu estou tentando mudar isso, sei que temos nossas brigas e momentos ruins, sei que somos imperfeitos, mas também sei que somos perfeitos juntos, quero fazer isso dar certo, eu costumo escrever oque eu sinto sem pensar muito, e eu vejo esse texto quase como um pedido de desculpas por tudo que eu já fiz e pela forma que eu agi e ainda ajo com certas coisas que te incomodam, mas também é a minha forma de dizer que eu te amo e que você é muito importante pra mim, muito mesmo, eu te amo.
+        </div>
+        <div class="photo-grid">
+            <div class="photo-item"><img src="img/nos1.png"></div>
+            <div class="photo-item"><img src="img/nos3.jpg"></div>
+            <div class="photo-item"><img src="img/nos6.png"></div>
         </div>
     </section>
 
