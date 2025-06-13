@@ -267,7 +267,7 @@
     </div>
 
     <audio id="background-music" loop>
-        <source src="audio/background.mp3" type="audio/mpeg">
+        <source id="bgMusic" src="audio/background.mp3" type="audio/mpeg">
     </audio>
 
     <div class="nav-container" id="navContainer">
@@ -461,6 +461,24 @@ function showMemoryGame() {
     memoryFlipped = [];
 }
 
+setTimeout(() => {
+  const bgMusic = document.getElementById("bgMusic");
+  const specialAudio = document.getElementById("specialAudio");
+
+  if (bgMusic && specialAudio) {
+    specialAudio.addEventListener("play", () => {
+      if (!bgMusic.paused) {
+        bgMusic.pause();
+      }
+    });
+
+    specialAudio.addEventListener("ended", () => {
+      bgMusic.play();
+    });
+  }
+}, 500);
+
+
 let memoryFlipped = [];
 let memoryMatched = [];
 
@@ -475,7 +493,7 @@ function flipCard(el, src) {
             memoryMatched.push(memoryFlipped[0].el, memoryFlipped[1].el);
             memoryFlipped = [];
             if (memoryMatched.length === 10) {
-                document.getElementById('memoryStatus').innerHTML = '<strong style="color:#ff99b3;">FELIZ DIA DOS NAMORADOS AMORRRRR</strong><br><br><div style="background:#fff0f5; padding:1.5rem; border-radius:20px; box-shadow:0 5px 15px rgba(0,0,0,0.05); text-align:justify;">Eu te amo muito meu bem, hoje é um dia importante, é o nosso dia, mas todo dia é o nosso dia, pois eu quero ficar contigo para sempre, quero que meus filhos sejam contigo, que meu futuro seja contigo, que meus dias sejam contigo, eu quero que seja com você, apenas você, eu te amo muito minha princesa, obrigado por tudo que você já me fez, por tudo que já vivemos, e por mais que tenha sido pouco, foram os melhores dias, semanas e meses da minha vida, qualquer momento com você é muito especial, eu te amo como eu nunca amei alguém, eu te quero como eu nunca quis alguém, eu confio em ti como eu nunca confiei em outra pessoa, você é o amor da minha vida, quero poder estar contigo sempre que precisar, e quero que saiba que eu sou seu para qualquer momento, eu quero que divida seus problemas comigo, quero que divida seus momentos bons comigo, quero que confie em mim para te fazer bem, e por mais que eu não seja tão bom em lidar com sentimentos, eu quero poder melhorar seu dia, quero te deixar bem, te deixar confortavel, quero te amar e sentir seu amor, muito obrigado minha princesa, você é tudo pra mim, eu te amo. FELIZ DIA DOS NAMORADOOS :3</div> <audio controls style="margin-top: 1.5rem; width: 100%;"> <source src="audio/audio1.m4a" type="audio/mp4"> </audio>`;';
+                document.getElementById('memoryStatus').innerHTML = '<strong style="color:#ff99b3;">FELIZ DIA DOS NAMORADOS AMORRRRR</strong><br><br><div style="background:#fff0f5; padding:1.5rem; border-radius:20px; box-shadow:0 5px 15px rgba(0,0,0,0.05); text-align:justify;">Eu te amo muito meu bem, hoje é um dia importante, é o nosso dia, mas todo dia é o nosso dia, pois eu quero ficar contigo para sempre, quero que meus filhos sejam contigo, que meu futuro seja contigo, que meus dias sejam contigo, eu quero que seja com você, apenas você, eu te amo muito minha princesa, obrigado por tudo que você já me fez, por tudo que já vivemos, e por mais que tenha sido pouco, foram os melhores dias, semanas e meses da minha vida, qualquer momento com você é muito especial, eu te amo como eu nunca amei alguém, eu te quero como eu nunca quis alguém, eu confio em ti como eu nunca confiei em outra pessoa, você é o amor da minha vida, quero poder estar contigo sempre que precisar, e quero que saiba que eu sou seu para qualquer momento, eu quero que divida seus problemas comigo, quero que divida seus momentos bons comigo, quero que confie em mim para te fazer bem, e por mais que eu não seja tão bom em lidar com sentimentos, eu quero poder melhorar seu dia, quero te deixar bem, te deixar confortavel, quero te amar e sentir seu amor, muito obrigado minha princesa, você é tudo pra mim, eu te amo. FELIZ DIA DOS NAMORADOOS :3</div> <audio id="specialAudio" controls style="margin-top: 1.5rem; width: 100%;"> <source src="audio/audio1.m4a" type="audio/mp4"> </audio>`;';
             }
         } else {
             setTimeout(() => {
