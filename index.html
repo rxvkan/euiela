@@ -386,5 +386,114 @@
         setInterval(updateCounter, 1000);
         updateCounter();
     </script>
+    <button id="quizButton" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; padding: 1rem 2rem; background: #ff99b3; color: white; border: none; border-radius: 30px; font-size: 1rem; box-shadow: 0 5px 15px rgba(255,153,179,0.3); cursor: pointer; animation: pulse 2s infinite;">Clique aqui</button>
+
+<!-- Seção SPA do Quiz -->
+<section class="section" id="quiz" style="display: none;">
+    <div class="love-text">
+        <h2 style="text-align: center; margin-bottom: 1.5rem;">Quiz hardcore COOL</h2>
+        <div id="quizContent"></div>
+    </div>
+</section>
+
+<!-- Script extra para quiz SPA -->
+<script>
+const quizButton = document.getElementById('quizButton');
+const quizSection = document.getElementById('quiz');
+
+const quizQuestions = [
+    {
+        question: "Qual é a minha cor favorita? rs",
+        options: ["Azul", "Rosa", "Preto", "Roxo"],
+        answer: 3
+    },
+    {
+        question: "Qual a nossa data de namoro (mt difisiu)?",
+        options: ["12/03", "30/03", "07/04", "22/03"],
+        answer: 1
+    },
+    {
+        question: "Voce quer casar comigo? erri essi",
+        options: ["SIM!", "NÃO!", "eu gosto de come coco"],
+        answer: 0
+    },
+    {
+        question: "Qual a minha comida favorita?",
+        options: ["Pizza", "Sushi", "Hambúrguer", "Churrasco"],
+        answer: 1
+    }
+];
+
+let currentQuestion = 0;
+let correctAnswers = 0;
+
+function showQuestion(index) {
+    const q = quizQuestions[index];
+    let html = `<h3>${q.question}</h3>`;
+    q.options.forEach((opt, i) => {
+        html += `<button class='nav-button' onclick='checkAnswer(${i})'>${opt}</button>`;
+    });
+    document.getElementById('quizContent').innerHTML = html;
+}
+
+function checkAnswer(selected) {
+    if (quizQuestions[currentQuestion].answer === selected) correctAnswers++;
+    currentQuestion++;
+    if (currentQuestion < quizQuestions.length) {
+        showQuestion(currentQuestion);
+    } else {
+        showMemoryGame();
+    }
+}
+
+function showMemoryGame() {
+    const photos = ["img/nos1.png", "img/nos2.jpg", "img/nos3.jpg", "img/nos4.png", "img/nos5.png"];
+    const duplicated = [...photos, ...photos].sort(() => Math.random() - 0.5);
+    let html = `<h3>Tem que lembrar e tals</h3><div style='display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;'>`;
+    duplicated.forEach((src, i) => {
+        html += `<div onclick="flipCard(this, '${src}')" style="background:#fff; border: 2px solid #ffc0cb; border-radius:10px; aspect-ratio:1; box-shadow:0 5px 15px rgba(0,0,0,0.1); overflow:hidden; cursor:pointer; position:relative;">
+            <img src="${src}" style="width:100%; height:100%; object-fit:cover; display:none;">
+        </div>`;
+    });
+    html += `</div><p id="memoryStatus" style="margin-top: 1rem; text-align:center;"></p>`;
+    document.getElementById('quizContent').innerHTML = html;
+    memoryMatched = [];
+    memoryFlipped = [];
+}
+
+let memoryFlipped = [];
+let memoryMatched = [];
+
+function flipCard(el, src) {
+    const img = el.querySelector('img');
+    if (img.style.display === 'block' || memoryFlipped.length === 2 || memoryMatched.includes(el)) return;
+    img.style.display = 'block';
+    memoryFlipped.push({ el, src });
+
+    if (memoryFlipped.length === 2) {
+        if (memoryFlipped[0].src === memoryFlipped[1].src) {
+            memoryMatched.push(memoryFlipped[0].el, memoryFlipped[1].el);
+            memoryFlipped = [];
+            if (memoryMatched.length === 10) {
+                document.getElementById('memoryStatus').innerHTML = '<strong style="color:#ff99b3;">FELIZ DIA DOS NAMORADOS AMORRRRR</strong><br><br><div style="background:#fff0f5; padding:1.5rem; border-radius:20px; box-shadow:0 5px 15px rgba(0,0,0,0.05); text-align:justify;">Eu te amo muito meu bem, hoje é um dia importante, é o nosso dia, mas todo dia é o nosso dia, pois eu quero ficar contigo para sempre, quero que meus filhos sejam contigo, que meu futuro seja contigo, que meus dias sejam contigo, eu quero que seja com você, apenas você, eu te amo muito minha princesa, obrigado por tudo que você já me fez, por tudo que já vivemos, e por mais que tenha sido pouco, foram os melhores dias, semanas e meses da minha vida, qualquer momento com você é muito especial, eu te amo como eu nunca amei alguém, eu te quero como eu nunca quis alguém, eu confio em ti como eu nunca confiei em outra pessoa, você é o amor da minha vida, quero poder estar contigo sempre que precisar, e quero que saiba que eu sou seu para qualquer momento, eu quero que divida seus problemas comigo, quero que divida seus momentos bons comigo, quero que confie em mim para te fazer bem, e por mais que eu não seja tão bom em lidar com sentimentos, eu quero poder melhorar seu dia, quero te deixar bem, te deixar confortavel, quero te amar e sentir seu amor, muito obrigado minha princesa, você é tudo pra mim, eu te amo. FELIZ DIA DOS NAMORADOOS :3</div> <audio controls style="margin-top: 1.5rem; width: 100%;"> <source src="audio/audio1.m4a" type="audio/mp4"> </audio>`;';
+            }
+        } else {
+            setTimeout(() => {
+                memoryFlipped.forEach(card => card.el.querySelector('img').style.display = 'none');
+                memoryFlipped = [];
+            }, 1000);
+        }
+    }
+}
+
+quizButton.addEventListener('click', () => {
+    quizSection.style.display = 'block';
+    navContainer.classList.remove('visible');
+    splashScreen.style.display = 'none';
+    sections.forEach(sec => sec.classList.remove('active'));
+    quizSection.classList.add('active');
+    showQuestion(0);
+});
+</script>
 </body>
 </html>
